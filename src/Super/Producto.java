@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 public abstract class Producto {
 
 	private double iva;
@@ -29,7 +37,7 @@ public abstract class Producto {
 	}
 
 	public Producto(Scanner sc){
-
+	
 		this.sc=sc;
 	}
 
@@ -110,6 +118,28 @@ public abstract class Producto {
 		}
 
 	}
+	
+	public void imprimirXML() {
+
+		try {
+
+			JAXBContext contexto = JAXBContext.newInstance(this.getClass());
+
+			Marshaller marshaller = contexto.createMarshaller();
+
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+			marshaller.marshal(this, System.out);
+
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 
 	public String volcar(ArrayList<Producto> lista){
@@ -119,6 +149,7 @@ public abstract class Producto {
 		
 		return listString;
 	}
+	
 
 
 
